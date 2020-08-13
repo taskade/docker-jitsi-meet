@@ -73,6 +73,13 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.jvb.resources | nindent 12 }}
+        - name: httpd
+          image: httpd:2.4.43-alpine
+          ports:
+            - name: httpd
+              containerPort: 80
+              hostPort: 30080
+              protocol: TCP
 
       {{- with .Values.jvb.nodeSelector }}
       nodeSelector:
