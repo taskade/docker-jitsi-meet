@@ -16,6 +16,8 @@ spec:
       annotations:
         checksum/config: {{ include (print $.Template.BasePath "/jvb/configmap.yaml") . | sha256sum }}
         checksum/secret: {{ include (print $.Template.BasePath "/jvb/xmpp-secret.yaml") . | sha256sum }}
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "9888"
     spec:
     {{- with .Values.imagePullSecrets }}
       imagePullSecrets:
@@ -63,6 +65,9 @@ spec:
               {{- end }}
               protocol: TCP
           {{- end }}
+            - name: metrics
+              containerPort: 8080
+              protocol: TCP
           {{- with .Values.jvb.livenessProbe }}
           livenessProbe:
           {{- toYaml . | nindent 12 }}
@@ -80,6 +85,12 @@ spec:
               containerPort: 80
               hostPort: 30080
               protocol: TCP
+        - name: exporter
+          image: systemli/prometheus-jitsi-meet-exporter:1.1.1
+          args: ["-videobridge-url", "http://localhost:8080/colibri/stats"]
+          ports:
+            - name: metrics
+              containerPort: 9888
 
       {{- with .Values.jvb.nodeSelector }}
       nodeSelector:
