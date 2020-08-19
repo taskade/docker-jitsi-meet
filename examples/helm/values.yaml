@@ -81,7 +81,8 @@ web:
     #   cpu: 100m
     #   memory: 128Mi
 
-  nodeSelector: {}
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: taskade-dev-node-group-20200605-jitsi-m5-large
 
   tolerations: []
 
@@ -108,7 +109,8 @@ jicofo:
   podSecurityContext: {}
   securityContext: {}
   resources: {}
-  nodeSelector: {}
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: taskade-dev-node-group-20200605-jitsi-m5-large
   tolerations: []
   affinity: {}
   extraEnvs: {}
@@ -149,7 +151,8 @@ jvb:
   podSecurityContext: {}
   securityContext: {}
   resources: {}
-  nodeSelector: {}
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: taskade-dev-node-group-20200605-jitsi-m5-large
   tolerations: []
   affinity: {}
   extraEnvs:
@@ -188,3 +191,5 @@ prosody:
   image:
     repository: jitsi/prosody
     tag: stable-4857
+  nodeSelector:
+    eks.amazonaws.com/nodegroup: taskade-dev-node-group-20200605-jitsi-m5-large
