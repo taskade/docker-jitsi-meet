@@ -29,7 +29,15 @@ spec:
             {{- toYaml .Values.web.securityContext | nindent 12 }}
           image: "{{ .Values.web.image.repository }}:{{ default .Chart.AppVersion .Values.web.image.tag }}"
           imagePullPolicy: {{ pluck "pullPolicy" .Values.web.image .Values.image | first }}
-          command: ["bash", "-c", "apt-get install -y curl && curl https://i.imgur.com/UtxfXcd.png -o /usr/share/jitsi-meet/images/watermark.png && /init"]
+          command: [
+            "bash",
+            "-c",
+            "apt-get install -y curl && \
+              curl https://i.imgur.com/UtxfXcd.png -o /usr/share/jitsi-meet/images/watermark.png && \
+              sed -i 's/SHOW_JITSI_WATERMARK: true/SHOW_JITSI_WATERMARK: false/' /defaults/interface_config.js && \
+              sed -i 's/SHOW_WATERMARK_FOR_GUESTS: true/SHOW_WATERMARK_FOR_GUESTS: false/' /defaults/interface_config.js && \
+              /init"
+            ]
           envFrom:
           - configMapRef:
               name: {{ include "jitsi-meet.web.fullname" . }}
