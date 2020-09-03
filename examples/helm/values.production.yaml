@@ -158,11 +158,11 @@ jvb:
   securityContext: {}
   resources:
     limits:
-      cpu: 500m
-      memory: 1024Mi
+      cpu: 1
+      memory: 2048Mi
     requests:
-      cpu: 500m
-      memory: 1024Mi
+      cpu: 1
+      memory: 2048Mi
   nodeSelector:
     eks.amazonaws.com/nodegroup: taskade-prod-node-group-20200615-jitsi-m5-large
   tolerations: []
