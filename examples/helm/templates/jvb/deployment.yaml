@@ -32,6 +32,12 @@ spec:
             {{- toYaml .Values.jvb.securityContext | nindent 12 }}
           image: "{{ .Values.jvb.image.repository }}:{{ default .Chart.AppVersion .Values.jvb.image.tag }}"
           imagePullPolicy: {{ pluck "pullPolicy" .Values.jvb.image .Values.image | first }}
+          command: [
+            "bash",
+            "-c",
+            "echo $'org.jitsi.videobridge.rest.jetty.cors.allowedOrigins=localhost:8080,call.taskade.dev' >> /defaults/sip-communicator.properties && \
+              /init"
+            ]
           envFrom:
           - secretRef:
               name: {{ include "call-nested" (list . "prosody" "prosody.fullname") }}-jvb
